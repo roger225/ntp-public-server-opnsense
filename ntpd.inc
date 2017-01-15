@@ -340,10 +340,11 @@ function ntpd_configure_do($start_ntpd = true, $verbose = false)
     /* Access restrictions */
     $ntpcfg .= 'restrict default';
     if (empty($config['ntpd']['kod'])) { /*note: this one works backwards */
-        $ntpcfg .= ' kod limited';
+	#$ntpcfg .= ' kod limited';
+	$ntpcfg .= ' kod';
     }
     if (empty($config['ntpd']['nomodify'])) { /*note: this one works backwards */
-        $ntpcfg .= ' nomodify';
+        $ntpcfg .= ' nomodify noquery';
     }
     if (!empty($config['ntpd']['noquery'])) {
         $ntpcfg .= ' noquery';
@@ -359,10 +360,11 @@ function ntpd_configure_do($start_ntpd = true, $verbose = false)
     }
     $ntpcfg .= "\nrestrict -6 default";
     if (empty($config['ntpd']['kod'])) { /*note: this one works backwards */
-        $ntpcfg .= ' kod limited';
+        #$ntpcfg .= ' kod limited';
+	$ntpcfg .= ' kod';
     }
     if (empty($config['ntpd']['nomodify'])) { /*note: this one works backwards */
-        $ntpcfg .= ' nomodify';
+        $ntpcfg .= ' nomodify noquery';
     }
     if (!empty($config['ntpd']['noquery'])) {
         $ntpcfg .= ' noquery';
@@ -377,6 +379,9 @@ function ntpd_configure_do($start_ntpd = true, $verbose = false)
         $ntpcfg .= ' notrap';
     }
     $ntpcfg .= "\n";
+    #====roger225===20170115====
+    $ntpcfg .= "restrict 127.0.0.1\n";
+    $ntpcfg .= "restrict -6 ::1\n";
 
     /* A leapseconds file is really only useful if this clock is stratum 1 */
     $ntpcfg .= "\n";
